@@ -516,7 +516,7 @@
             document.getElementById('inputCode').textContent = `31${inputCode}`;
             
             if (data) {
-                document.getElementById('outputCode').textContent = data.output;
+                document.getElementById('outputCode').textContent = '99' + data.output;
                 document.getElementById('description').textContent = data.desc;
                 updateStatus(currentLang === 'hu' ? 'Találat!' : 'Found!', 'success');
                 speakNumbers(data.output);
@@ -526,9 +526,9 @@
                 updateStatus(currentLang === 'hu' ? 'Nem található' : 'Not found', 'error');
                 
                 setTimeout(() => {
-                    updateStatus(currentLang === 'hu' ? 'Készen áll' : 'Ready');
                     codeInput.value = '';
-                    codeInput.focus();
+                    isListening = false;
+                    startListening();
                 }, 1500);
             }
         }
