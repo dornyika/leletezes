@@ -557,8 +557,14 @@
             e.target.value = e.target.value.replace(/[^0-9]/g, '');
         });
 
-        // Hangfelismerés indítása
+        // Hangfelismerés indítása/leállítása
         function startListening() {
+            // Ha már fut, állítsuk le
+            if (isListening && recognition) {
+                recognition.stop();
+                return;
+            }
+            
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
                 alert(currentLang === 'hu' 
                     ? 'A böngésző nem támogatja a hangfelismerést. Használj Chrome-ot!' 
@@ -569,8 +575,8 @@
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
             recognition.lang = currentLang === 'hu' ? 'hu-HU' : 'en-US';
-            recognition.continuous = false;
-            recognition.interimResults = false;
+            recognition.continuous = true;
+            recognition.interimResults = true;
 
             const micBtn = document.getElementById('micBtn');
 
@@ -581,16 +587,17 @@
             };
 
             recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
+                const lastResult = event.results[event.results.length - 1];
+                const transcript = lastResult[0].transcript;
                 const code = parseSpokenNumbers(transcript);
                 
-                if (code && code.length === 3) {
-                    codeInput.value = code;
+                // Megjelenítjük amit hallunk
+                codeInput.value = code || transcript.slice(0, 3);
+                
+                // Ha végleges eredmény és érvényes 3 jegyű kód
+                if (lastResult.isFinal && code && code.length === 3 && codeDatabase[code]) {
+                    recognition.stop();
                     lookupCode(code);
-                } else {
-                    updateStatus(currentLang === 'hu' 
-                        ? 'Nem értettem. Próbáld újra!' 
-                        : 'Did not understand. Try again!', 'error');
                 }
             };
 
