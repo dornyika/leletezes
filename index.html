@@ -592,24 +592,40 @@
                 const code = parseSpokenNumbers(transcript);
                 
                 // Megjelenítjük amit hallunk
-                codeInput.value = code || transcript.slice(0, 3);
+                if (code && code.length >= 1) {
+                    codeInput.value = code;
+                }
                 
-                // Ha végleges eredmény és érvényes 3 jegyű kód
-                if (lastResult.isFinal && code && code.length === 3 && codeDatabase[code]) {
+                // Ha végleges eredmény és 3 számjegyünk van
+                if (lastResult.isFinal && code && code.length === 3) {
+                    isListening = false; // Jelezzük hogy ne induljon újra
                     recognition.stop();
                     lookupCode(code);
                 }
             };
 
             recognition.onerror = (event) => {
-                updateStatus(currentLang === 'hu' 
-                    ? 'Hiba történt. Használd a billentyűzetet!' 
-                    : 'Error. Use keyboard instead!', 'error');
+                console.log('Speech error:', event.error);
+                // Ne álljon le hiba esetén, csak "no-speech" vagy "aborted" esetén
+                if (event.error === 'no-speech') {
+                    // Folytatjuk a figyelést
+                }
             };
 
             recognition.onend = () => {
-                isListening = false;
-                micBtn.classList.remove('listening');
+                // Ha még mindig figyelni akarunk (nem volt sikeres találat), indítsuk újra
+                if (isListening) {
+                    try {
+                        recognition.start();
+                    } catch (e) {
+                        isListening = false;
+                        micBtn.classList.remove('listening');
+                        updateStatus(currentLang === 'hu' ? 'Készen áll' : 'Ready');
+                    }
+                } else {
+                    micBtn.classList.remove('listening');
+                    updateStatus(currentLang === 'hu' ? 'Készen áll' : 'Ready');
+                }
             };
 
             recognition.start();
