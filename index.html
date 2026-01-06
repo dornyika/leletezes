@@ -484,30 +484,47 @@
             return result.slice(-3).padStart(3, '0');
         }
 
-        // Számok felolvasása
+        // Számok felolvasása (magyarul ha van hang, különben angolul)
         function speakNumbers(code) {
             const digits = code.split('');
             
-            const digitWords = currentLang === 'hu'
-                ? ['nulla', 'egy', 'kettő', 'három', 'négy', 'öt', 'hat', 'hét', 'nyolc', 'kilenc']
-                : ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+            // Ellenőrizzük van-e magyar hang
+            const voices = speechSynthesis.getVoices();
+            const hungarianVoice = voices.find(v => v.lang.startsWith('hu'));
             
-            const text = digits.map(d => digitWords[parseInt(d)]).join(', ');
+            let text, lang;
+            if (hungarianVoice) {
+                const digitWordsHu = ['nulla', 'egy', 'kettő', 'három', 'négy', 'öt', 'hat', 'hét', 'nyolc', 'kilenc'];
+                text = digits.map(d => digitWordsHu[parseInt(d)]).join(', ');
+                lang = 'hu-HU';
+            } else {
+                const digitWordsEn = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+                text = digits.map(d => digitWordsEn[parseInt(d)]).join(', ');
+                lang = 'en-US';
+            }
             
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = currentLang === 'hu' ? 'hu-HU' : 'en-US';
+            utterance.lang = lang;
+            if (hungarianVoice) {
+                utterance.voice = hungarianVoice;
+            }
             utterance.rate = 0.85;
             
             utterance.onend = () => {
                 setTimeout(() => {
                     codeInput.value = '';
-                    isListening = false; // Reseteljük mielőtt újraindítjuk
+                    isListening = false;
                     startListening();
                 }, 500);
             };
             
             speechSynthesis.speak(utterance);
         }
+        
+        // Hangok betöltése (egyes böngészőkben aszinkron)
+        speechSynthesis.onvoiceschanged = () => {
+            speechSynthesis.getVoices();
+        };
 
         // Keresés és eredmény
         function lookupCode(inputCode) {
@@ -605,16 +622,31 @@
                 }
             };
 
-            recognition.onerror = () => {
-                updateStatus(currentLang === 'hu' 
-                    ? 'Hiba történt.' 
-                    : 'Error occurred.', 'error');
+            recognition.onerror = (event) => {
+                console.log('Speech error:', event.error);
+                updateStatus('Hiba: ' + event.error, 'error');
+                // Automatikus újraindítás hiba után
+                setTimeout(() => {
+                    isListening = false;
+                    startListening();
+                }, 2000);
             };
 
             recognition.onend = () => {
                 micBtn.classList.remove('listening');
-                // Ha még figyelnie kell (nem volt sikeres), ne álljon le
-                // A sikeres keresés a speakNumbers-ben indítja újra
+                // Ha váratlanul leállt (isListening még true), indítsuk újra
+                if (isListening) {
+                    setTimeout(() => {
+                        try {
+                            recognition.start();
+                            micBtn.classList.add('listening');
+                            updateStatus(currentLang === 'hu' ? 'Figyelek...' : 'Listening...', 'listening');
+                        } catch(e) {
+                            isListening = false;
+                            updateStatus('Leállt. Kattints a mikrofonra.', 'error');
+                        }
+                    }, 500);
+                }
             };
 
             recognition.start();
