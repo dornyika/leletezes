@@ -598,7 +598,10 @@
                         ? 'Nem értettem. Próbáld újra!' 
                         : 'Did not understand. Try again!', 'error');
                     // Ha nem értette, újraindít
-                    setTimeout(() => startListening(), 1000);
+                    setTimeout(() => {
+                        isListening = false;
+                        startListening();
+                    }, 1000);
                 }
             };
 
