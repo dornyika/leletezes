@@ -503,10 +503,10 @@
             
             utterance.onend = () => {
                 setTimeout(() => {
-                    updateStatus(currentLang === 'hu' ? 'Készen áll' : 'Ready');
                     codeInput.value = '';
-                    codeInput.focus();
-                }, 300);
+                    // Automatikusan újraindítjuk a figyelést
+                    startListening();
+                }, 500);
             };
             
             speechSynthesis.speak(utterance);
