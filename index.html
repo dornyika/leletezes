@@ -435,6 +435,7 @@
 
         let currentLang = 'hu';
         let recognition = null;
+        let isListening = false;
 
         const codeInput = document.getElementById('codeInput');
         const status = document.getElementById('status');
@@ -499,10 +500,9 @@
             
             utterance.onend = () => {
                 setTimeout(() => {
-                    updateStatus(currentLang === 'hu' ? 'Készen áll' : 'Ready');
                     codeInput.value = '';
-                    codeInput.focus();
-                }, 300);
+                    startListening(); // Automatikusan újraindít
+                }, 500);
             };
             
             speechSynthesis.speak(utterance);
@@ -555,6 +555,15 @@
 
         // Hangfelismerés
         function startListening() {
+            // Ha már fut, állítsuk le
+            if (isListening) {
+                isListening = false;
+                if (recognition) recognition.stop();
+                document.getElementById('micBtn').classList.remove('listening');
+                updateStatus(currentLang === 'hu' ? 'Megállítva' : 'Stopped');
+                return;
+            }
+
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
                 alert(currentLang === 'hu' 
                     ? 'A böngésző nem támogatja a hangfelismerést.' 
@@ -571,6 +580,7 @@
             const micBtn = document.getElementById('micBtn');
 
             recognition.onstart = () => {
+                isListening = true;
                 micBtn.classList.add('listening');
                 updateStatus(currentLang === 'hu' ? 'Figyelek...' : 'Listening...', 'listening');
             };
@@ -586,6 +596,8 @@
                     updateStatus(currentLang === 'hu' 
                         ? 'Nem értettem. Próbáld újra!' 
                         : 'Did not understand. Try again!', 'error');
+                    // Ha nem értette, újraindít
+                    setTimeout(() => startListening(), 1000);
                 }
             };
 
@@ -597,6 +609,8 @@
 
             recognition.onend = () => {
                 micBtn.classList.remove('listening');
+                // Ha még figyelnie kell (nem volt sikeres), ne álljon le
+                // A sikeres keresés a speakNumbers-ben indítja újra
             };
 
             recognition.start();
