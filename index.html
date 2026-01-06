@@ -601,9 +601,19 @@
                 isListening = true;
                 micBtn.classList.add('listening');
                 updateStatus(currentLang === 'hu' ? 'Figyelek...' : 'Listening...', 'listening');
+                
+                // Timeout - ha 15mp-ig nincs eredmény, újraindítjuk
+                clearTimeout(window.recognitionTimeout);
+                window.recognitionTimeout = setTimeout(() => {
+                    if (isListening) {
+                        console.log('Timeout - restarting');
+                        recognition.stop();
+                    }
+                }, 15000);
             };
 
             recognition.onresult = (event) => {
+                clearTimeout(window.recognitionTimeout);
                 const transcript = event.results[0][0].transcript;
                 const code = parseSpokenNumbers(transcript);
                 
