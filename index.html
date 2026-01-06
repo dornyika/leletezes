@@ -501,7 +501,8 @@
             utterance.onend = () => {
                 setTimeout(() => {
                     codeInput.value = '';
-                    startListening(); // Automatikusan újraindít
+                    isListening = false; // Reseteljük mielőtt újraindítjuk
+                    startListening();
                 }, 500);
             };
             
