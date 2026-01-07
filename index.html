@@ -353,7 +353,7 @@
             utterance.onend = () => {
                 codeInput.value = '';
                 // Újraindítás
-                setTimeout(() => toggleListening(), 500);
+                setTimeout(() => startListening(), 500);
             };
             
             speechSynthesis.speak(utterance);
@@ -374,7 +374,7 @@
                 document.getElementById('description').textContent = '';
                 updateStatus('Nem található', 'error');
                 // Újraindítás nem találat esetén is
-                setTimeout(() => toggleListening(), 1000);
+                setTimeout(() => startListening(), 1000);
             }
         }
 
@@ -395,18 +395,8 @@
             e.target.value = e.target.value.replace(/[^0-9]/g, '');
         });
 
-        // Hangfelismerés - egyszerű, nincs automatikus újraindítás
-        function toggleListening() {
-            if (isListening) {
-                // Leállítás
-                if (recognition) recognition.stop();
-                isListening = false;
-                micBtn.classList.remove('listening');
-                updateStatus('Megállítva');
-                return;
-            }
-
-            // Indítás
+        // Hangfelismerés indítása (mindig újat hoz létre)
+        function startListening() {
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
                 alert('A böngésző nem támogatja a hangfelismerést.');
                 return;
@@ -434,6 +424,8 @@
                     lookupCode(code);
                 } else {
                     updateStatus('Nem értettem: ' + transcript, 'error');
+                    // Újrapróbálás
+                    setTimeout(() => startListening(), 1000);
                 }
             };
 
@@ -447,12 +439,21 @@
             recognition.onend = () => {
                 isListening = false;
                 micBtn.classList.remove('listening');
-                if (status.textContent === 'Figyelek...') {
-                    updateStatus('Készen áll');
-                }
             };
 
             recognition.start();
+        }
+
+        // Mikrofon gomb: toggle
+        function toggleListening() {
+            if (isListening) {
+                if (recognition) recognition.stop();
+                isListening = false;
+                micBtn.classList.remove('listening');
+                updateStatus('Megállítva');
+            } else {
+                startListening();
+            }
         }
     </script>
 </body>
