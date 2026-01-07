@@ -7,11 +7,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;500;700&display=swap');
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Outfit', sans-serif;
@@ -25,11 +21,7 @@
             padding: 20px;
         }
         
-        .container {
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-        }
+        .container { max-width: 500px; width: 100%; text-align: center; }
         
         h1 {
             font-size: 1.8rem;
@@ -41,42 +33,7 @@
             background-clip: text;
         }
         
-        .subtitle {
-            font-size: 0.9rem;
-            color: #64748b;
-            margin-bottom: 30px;
-        }
-        
-        .language-toggle {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-        
-        .lang-btn {
-            padding: 10px 25px;
-            border: 2px solid #dc2626;
-            background: transparent;
-            color: #dc2626;
-            font-family: 'Outfit', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .lang-btn.active {
-            background: #dc2626;
-            color: #fff;
-        }
-        
-        .lang-btn:hover {
-            background: #dc2626;
-            color: #fff;
-            transform: scale(1.05);
-        }
+        .subtitle { font-size: 0.9rem; color: #64748b; margin-bottom: 30px; }
         
         .input-section {
             background: #fff;
@@ -105,58 +62,34 @@
             text-align: center;
             color: #1e293b;
             background: #f8fafc;
-            transition: all 0.3s ease;
         }
         
         .code-input:focus {
             outline: none;
             border-color: #dc2626;
-            box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
         }
         
-        .code-input::placeholder {
-            color: #cbd5e1;
-        }
-        
-        .search-btn {
+        .search-btn, .mic-btn {
             width: 60px;
             height: 60px;
             border-radius: 15px;
             border: none;
-            background: linear-gradient(145deg, #dc2626, #f97316);
-            color: #fff;
             font-size: 1.5rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
-        .search-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+        .search-btn {
+            background: linear-gradient(145deg, #dc2626, #f97316);
+            color: #fff;
         }
         
         .mic-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 15px;
             border: 2px solid #e2e8f0;
             background: #fff;
             color: #64748b;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .mic-btn:hover {
-            border-color: #dc2626;
-            color: #dc2626;
         }
         
         .mic-btn.listening {
@@ -171,11 +104,6 @@
             50% { transform: scale(1.08); }
         }
         
-        .hint {
-            font-size: 0.8rem;
-            color: #94a3b8;
-        }
-        
         .status {
             font-family: 'JetBrains Mono', monospace;
             font-size: 1rem;
@@ -184,17 +112,9 @@
             color: #64748b;
         }
         
-        .status.listening {
-            color: #0ea5e9;
-        }
-        
-        .status.success {
-            color: #16a34a;
-        }
-        
-        .status.error {
-            color: #dc2626;
-        }
+        .status.listening { color: #0ea5e9; }
+        .status.success { color: #16a34a; }
+        .status.error { color: #dc2626; }
         
         .result-box {
             background: #fff;
@@ -228,31 +148,11 @@
             font-size: 0.9rem;
             color: #64748b;
             margin-top: 15px;
-            line-height: 1.5;
         }
         
-        .instructions {
-            margin-top: 30px;
-            padding: 15px 20px;
-            background: #fff;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            color: #64748b;
-            line-height: 1.6;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        .instructions strong {
-            color: #dc2626;
-        }
-        
-        kbd {
-            background: #f1f5f9;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            padding: 2px 6px;
-            font-family: 'JetBrains Mono', monospace;
+        .hint {
             font-size: 0.8rem;
+            color: #94a3b8;
         }
     </style>
 </head>
@@ -261,24 +161,13 @@
         <h1>OENO Kód Kereső</h1>
         <p class="subtitle">Röntgen leletezési kódok</p>
         
-        <div class="language-toggle">
-            <button class="lang-btn active" data-lang="hu" onclick="setLanguage('hu')">Magyar</button>
-            <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">English</button>
-        </div>
-        
         <div class="input-section">
             <div class="input-row">
-                <input type="text" 
-                       class="code-input" 
-                       id="codeInput" 
-                       maxlength="3" 
-                       placeholder="000"
-                       autocomplete="off"
-                       inputmode="numeric">
-                <button class="search-btn" id="searchBtn" onclick="searchCode()">→</button>
-                <button class="mic-btn" id="micBtn" onclick="startListening()">🎤</button>
+                <input type="text" class="code-input" id="codeInput" maxlength="3" placeholder="000" autocomplete="off" inputmode="numeric">
+                <button class="search-btn" onclick="searchCode()">→</button>
+                <button class="mic-btn" id="micBtn" onclick="toggleListening()">🎤</button>
             </div>
-            <p class="hint">Írd be a 3 számjegyet + <kbd>Enter</kbd></p>
+            <p class="hint">Írd be a 3 számjegyet + Enter, vagy használd a mikrofont</p>
         </div>
         
         <div class="status" id="status">Készen áll</div>
@@ -288,277 +177,213 @@
             <div class="output-code" id="outputCode">—</div>
             <div class="description" id="description"></div>
         </div>
-        
-        <div class="instructions">
-            <strong>Billentyűzet:</strong> Írd be a 3 számjegyet → <kbd>Enter</kbd><br>
-            <strong>Hang (HU):</strong> "három nyolc kettő"<br>
-            <strong>Voice (EN):</strong> "three eight two"
-        </div>
     </div>
 
     <script>
         // OENO kód adatbázis
         const codeDatabase = {
             "010": { output: "085", desc: "Mandibula felvétel + leletezés" },
-            "020": { output: "086", desc: "Állkapocsízületi felvétel+ leletezés" },
-            "021": { output: "087", desc: "Állcsúcs felvétel+ leletezés" },
-            "030": { output: "088", desc: "Radiographia dentalis extraoralis+ leletezés" },
-            "040": { output: "089", desc: "Radiographia dentalis panoramica+ leletezés" },
-            "050": { output: "090", desc: "Radiographia dentalis intraoralis, felvételenként+ leletezés" },
-            "060": { output: "091", desc: "Teleradiographia dentalis+ leletezés" },
-            "100": { output: "092", desc: "Koponyafelvétel, AP/PA+ leletezés" },
-            "101": { output: "093", desc: "Koponyafelvétel, oldalirányú+ leletezés" },
-            "102": { output: "094", desc: "Koponyafelvétel, kétirányú+ leletezés" },
-            "103": { output: "095", desc: "Koponyafelvétel, Towne szerint+ leletezés" },
-            "104": { output: "096", desc: "Koponyafelvétel, tangenciális+ leletezés" },
-            "110": { output: "097", desc: "Basis felvétel+ leletezés" },
-            "130": { output: "098", desc: "Sella felvétel+ leletezés" },
-            "140": { output: "099", desc: "Stenvers felvétel+ leletezés" },
-            "141": { output: "100", desc: "Schüller felvétel+ leletezés" },
-            "142": { output: "101", desc: "Mayer felvétel+ leletezés" },
-            "200": { output: "102", desc: "Orrmelléküreg felvétel+ leletezés" },
-            "201": { output: "103", desc: "Rhese felvétel+ leletezés" },
-            "210": { output: "104", desc: "Arcus zygomaticus felvétel+ leletezés" },
-            "211": { output: "105", desc: "Orrcsont felvétel oldalirányból+ leletezés" },
-            "212": { output: "106", desc: "Arckoponya felvétel+ leletezés" },
-            "230": { output: "107", desc: "Orbita felvétel+ leletezés" },
-            "231": { output: "108", desc: "Orbita felvétel, sweet technikával+ leletezés" },
-            "300": { output: "109", desc: "Trachea légsáv felvétel+ leletezés" },
-            "310": { output: "110", desc: "Mellkasfelvétel, AP/PA+ leletezés" },
-            "311": { output: "111", desc: "Mellkasfelvétel, oldalirányú+ leletezés" },
-            "312": { output: "112", desc: "Mellkasfelvétel, kétirányú+ leletezés" },
-            "380": { output: "113", desc: "Mellkasfelvétel, célzott+ leletezés" },
-            "381": { output: "114", desc: "Borda felvétel+ leletezés" },
-            "382": { output: "115", desc: "Sternum felvétel+ leletezés" },
-            "383": { output: "116", desc: "Sternum oldalirányú felvétel+ leletezés" },
-            "384": { output: "117", desc: "Sternum kivetített felvétel+ leletezés" },
-            "410": { output: "118", desc: "Epetáji natív felvétel+ leletezés" },
-            "420": { output: "119", desc: "Vese és hólyag natív felvétel+ leletezés" },
-            "421": { output: "120", desc: "Hólyagtáj natív felvétel+ leletezés" },
-            "440": { output: "121", desc: "Has natív felvétel+ leletezés" },
-            "441": { output: "122", desc: "Baby-gram+ leletezés" },
-            "442": { output: "123", desc: "Wangensteen-Rice felvétel+ leletezés" },
-            "460": { output: "124", desc: "Has célzott felvétel+ leletezés" },
-            "500": { output: "125", desc: "Dens felvétel+ leletezés" },
-            "510": { output: "126", desc: "Nyaki gerinc, AP felvétel+ leletezés" },
-            "511": { output: "127", desc: "Nyaki gerinc, oldalirányú felvétel+ leletezés" },
-            "512": { output: "128", desc: "Nyaki gerinc, kétirányú+ leletezés" },
-            "513": { output: "129", desc: "Gerinc vizsgálat, funkcionális+ leletezés" },
-            "515": { output: "130", desc: "Nyaki-háti gerinc átmenet, AP felvétel+ leletezés" },
-            "516": { output: "131", desc: "Nyaki-háti gerinc átmenet, oldalirányú felvétel+ leletezés" },
-            "517": { output: "132", desc: "Nyaki-háti gerinc átmenet, kétirányú felvétel+ leletezés" },
-            "530": { output: "133", desc: "Háti gerinc, AP felvétel+ leletezés" },
-            "531": { output: "134", desc: "Háti gerinc, oldalirányú felvétel+ leletezés" },
-            "532": { output: "135", desc: "Háti gerinc, kétirányú felvétel+ leletezés" },
-            "535": { output: "136", desc: "Háti-ágyéki gerinc átmenet, AP felvétel+ leletezés" },
-            "536": { output: "137", desc: "Háti-ágyéki gerinc átmenet, oldalirányú felvétel+ leletezés" },
-            "537": { output: "138", desc: "Háti-ágyéki gerinc átmenet, kétirányú felvétel+ leletezés" },
-            "540": { output: "139", desc: "Lumbalis gerinc, AP felvétel+ leletezés" },
-            "541": { output: "140", desc: "Lumbalis gerinc, oldalirányú felvétel+ leletezés" },
-            "542": { output: "141", desc: "Lumbalis gerinc, kétirányú felvétel+ leletezés" },
-            "544": { output: "142", desc: "Lumbosacralis gerinc, AP felvétel+ leletezés" },
-            "545": { output: "143", desc: "Lumbosacralis gerinc, oldalirányú felvétel+ leletezés" },
-            "546": { output: "144", desc: "Lumbosacralis gerinc, kétirányú felvétel+ leletezés" },
-            "548": { output: "145", desc: "Bending felvétel+ leletezés" },
-            "550": { output: "146", desc: "Sacrum coccygeum, AP felvétel+ leletezés" },
-            "551": { output: "147", desc: "Sacrum coccygeum, oldalirányú felvétel+ leletezés" },
-            "552": { output: "148", desc: "Sacrum, kétirányú felvétel+ leletezés" },
-            "560": { output: "149", desc: "Foramen vertebrarum felvétel+ leletezés" },
-            "561": { output: "150", desc: "Dittmar felvétel+ leletezés" },
-            "600": { output: "151", desc: "Clavicula felvétel+ leletezés" },
-            "601": { output: "152", desc: "Sterno-clavicularis ízületi felvétel+ leletezés" },
-            "602": { output: "153", desc: "Acromio-clavicularis ízületi felvétel+ leletezés" },
-            "603": { output: "154", desc: "Scapula felvétel+ leletezés" },
-            "604": { output: "155", desc: "Váll, AP felvétel+ leletezés" },
-            "605": { output: "156", desc: "Vállak összehasonlító AP felvételei+ leletezés" },
-            "606": { output: "157", desc: "Váll, axiális felvétel+ leletezés" },
-            "607": { output: "158", desc: "Váll, transthoracalis felvétel+ leletezés" },
-            "608": { output: "159", desc: "Váll, terheléses felvétel+ leletezés" },
-            "650": { output: "160", desc: "Medence, AP felvétel+ leletezés" },
-            "651": { output: "161", desc: "Csípőízület, AP felvétel+ leletezés" },
-            "652": { output: "162", desc: "Csípőízület, oldalirányú felvétel+ leletezés" },
-            "653": { output: "163", desc: "Csípőízület, Lauenstein felvétel+ leletezés" },
-            "654": { output: "164", desc: "Obturator felvétel+ leletezés" },
-            "655": { output: "165", desc: "Ala felvétel+ leletezés" },
-            "656": { output: "166", desc: "Medence bemenet felvétel+ leletezés" },
-            "657": { output: "167", desc: "Medence kimenet felvétel+ leletezés" },
-            "660": { output: "168", desc: "Gerinc, teljes AP felvétel+ leletezés" },
-            "661": { output: "169", desc: "Oldalirányú teljes gerincfelvétel+ leletezés" },
-            "662": { output: "170", desc: "Risser-csík felvétel+ leletezés" },
-            "710": { output: "171", desc: "Humerus, kétirányú felvétel+ leletezés" },
-            "720": { output: "172", desc: "Könyök, kétirányú felvétel+ leletezés" },
-            "725": { output: "173", desc: "Összehasonlító könyök felvétel+ leletezés" },
-            "730": { output: "174", desc: "Olecranon ulnae, axialis felvétel+ leletezés" },
-            "731": { output: "175", desc: "Alkar, kétirányú felvétel+ leletezés" },
-            "740": { output: "176", desc: "Csukló, kétirányú felvétel+ leletezés" },
-            "741": { output: "177", desc: "Csukló, tartott felvétel+ leletezés" },
-            "742": { output: "178", desc: "Csukló-kéz felvétel+ leletezés" },
-            "750": { output: "179", desc: "Os naviculare, négyirányú felvétel+ leletezés" },
-            "751": { output: "180", desc: "Os naviculare felvétel+ leletezés" },
-            "755": { output: "181", desc: "Összehasonlító kéz felvétel AP irányban+ leletezés" },
-            "760": { output: "182", desc: "Kéz, kétirányú felvétel+ leletezés" },
-            "761": { output: "183", desc: "Kéz I. ujj, kétirányú felvétel+ leletezés" },
-            "762": { output: "184", desc: "Kézujjak kétirányú felvétele+ leletezés" },
-            "763": { output: "185", desc: "Ujj, tartott felvétel+ leletezés" },
-            "800": { output: "186", desc: "Teljes alsóvégtagi röntgenfelvétel (AP)+ leletezés" },
-            "810": { output: "187", desc: "Femur, kétirányú felvétel+ leletezés" },
-            "819": { output: "188", desc: "Összehasonlító térdfelvétel (AP)+ leletezés" },
-            "820": { output: "189", desc: "Térd, kétirányú felvétel+ leletezés" },
-            "821": { output: "190", desc: "Térd, tartott felvétel+ leletezés" },
-            "822": { output: "191", desc: "Patella, axiális felvétel+ leletezés" },
-            "823": { output: "192", desc: "Alagút betekintő felvétel+ leletezés" },
-            "830": { output: "193", desc: "Lábszár, kétirányú felvétel+ leletezés" },
-            "840": { output: "194", desc: "Boka, kétirányú felvétel+ leletezés" },
-            "841": { output: "195", desc: "Boka, tartott felvétel+ leletezés" },
-            "842": { output: "196", desc: "Boka, háromirányú felvétel+ leletezés" },
-            "850": { output: "197", desc: "Sarokcsont, oldalirányú felvétel+ leletezés" },
-            "851": { output: "198", desc: "Sarokcsont, axialis felvétel+ leletezés" },
-            "852": { output: "199", desc: "Talocalcanealis betekintő felvétel+ leletezés" },
-            "860": { output: "200", desc: "Láb, kétirányú felvétel+ leletezés" },
-            "861": { output: "201", desc: "Láb I. ujj, kétirányú felvétel+ leletezés" },
-            "862": { output: "202", desc: "Láb egyéb ujjairól kétirányú felvétel+ leletezés" },
-            "863": { output: "203", desc: "Láb összehasonlító felvétel AP vagy ferde irányban+ leletezés" }
+            "020": { output: "086", desc: "Állkapocsízületi felvétel" },
+            "021": { output: "087", desc: "Állcsúcs felvétel" },
+            "030": { output: "088", desc: "Radiographia dentalis extraoralis" },
+            "040": { output: "089", desc: "Radiographia dentalis panoramica" },
+            "050": { output: "090", desc: "Radiographia dentalis intraoralis" },
+            "060": { output: "091", desc: "Teleradiographia dentalis" },
+            "100": { output: "092", desc: "Koponyafelvétel, AP/PA" },
+            "101": { output: "093", desc: "Koponyafelvétel, oldalirányú" },
+            "102": { output: "094", desc: "Koponyafelvétel, kétirányú" },
+            "103": { output: "095", desc: "Koponyafelvétel, Towne szerint" },
+            "104": { output: "096", desc: "Koponyafelvétel, tangenciális" },
+            "110": { output: "097", desc: "Basis felvétel" },
+            "130": { output: "098", desc: "Sella felvétel" },
+            "140": { output: "099", desc: "Stenvers felvétel" },
+            "141": { output: "100", desc: "Schüller felvétel" },
+            "142": { output: "101", desc: "Mayer felvétel" },
+            "200": { output: "102", desc: "Orrmelléküreg felvétel" },
+            "201": { output: "103", desc: "Rhese felvétel" },
+            "210": { output: "104", desc: "Arcus zygomaticus felvétel" },
+            "211": { output: "105", desc: "Orrcsont felvétel oldalirányból" },
+            "212": { output: "106", desc: "Arckoponya felvétel" },
+            "230": { output: "107", desc: "Orbita felvétel" },
+            "231": { output: "108", desc: "Orbita felvétel, sweet technikával" },
+            "300": { output: "109", desc: "Trachea légsáv felvétel" },
+            "310": { output: "110", desc: "Mellkasfelvétel, AP/PA" },
+            "311": { output: "111", desc: "Mellkasfelvétel, oldalirányú" },
+            "312": { output: "112", desc: "Mellkasfelvétel, kétirányú" },
+            "380": { output: "113", desc: "Mellkasfelvétel, célzott" },
+            "381": { output: "114", desc: "Borda felvétel" },
+            "382": { output: "115", desc: "Sternum felvétel" },
+            "383": { output: "116", desc: "Sternum oldalirányú felvétel" },
+            "384": { output: "117", desc: "Sternum kivetített felvétel" },
+            "410": { output: "118", desc: "Epetáji natív felvétel" },
+            "420": { output: "119", desc: "Vese és hólyag natív felvétel" },
+            "421": { output: "120", desc: "Hólyagtáj natív felvétel" },
+            "440": { output: "121", desc: "Has natív felvétel" },
+            "441": { output: "122", desc: "Baby-gram" },
+            "442": { output: "123", desc: "Wangensteen-Rice felvétel" },
+            "460": { output: "124", desc: "Has célzott felvétel" },
+            "500": { output: "125", desc: "Dens felvétel" },
+            "510": { output: "126", desc: "Nyaki gerinc, AP felvétel" },
+            "511": { output: "127", desc: "Nyaki gerinc, oldalirányú felvétel" },
+            "512": { output: "128", desc: "Nyaki gerinc, kétirányú" },
+            "513": { output: "129", desc: "Gerinc vizsgálat, funkcionális" },
+            "515": { output: "130", desc: "Nyaki-háti gerinc átmenet, AP" },
+            "516": { output: "131", desc: "Nyaki-háti gerinc átmenet, oldalirányú" },
+            "517": { output: "132", desc: "Nyaki-háti gerinc átmenet, kétirányú" },
+            "530": { output: "133", desc: "Háti gerinc, AP felvétel" },
+            "531": { output: "134", desc: "Háti gerinc, oldalirányú felvétel" },
+            "532": { output: "135", desc: "Háti gerinc, kétirányú felvétel" },
+            "535": { output: "136", desc: "Háti-ágyéki gerinc átmenet, AP" },
+            "536": { output: "137", desc: "Háti-ágyéki gerinc átmenet, oldalirányú" },
+            "537": { output: "138", desc: "Háti-ágyéki gerinc átmenet, kétirányú" },
+            "540": { output: "139", desc: "Lumbalis gerinc, AP felvétel" },
+            "541": { output: "140", desc: "Lumbalis gerinc, oldalirányú" },
+            "542": { output: "141", desc: "Lumbalis gerinc, kétirányú" },
+            "544": { output: "142", desc: "Lumbosacralis gerinc, AP" },
+            "545": { output: "143", desc: "Lumbosacralis gerinc, oldalirányú" },
+            "546": { output: "144", desc: "Lumbosacralis gerinc, kétirányú" },
+            "548": { output: "145", desc: "Bending felvétel" },
+            "550": { output: "146", desc: "Sacrum coccygeum, AP felvétel" },
+            "551": { output: "147", desc: "Sacrum coccygeum, oldalirányú" },
+            "552": { output: "148", desc: "Sacrum, kétirányú felvétel" },
+            "560": { output: "149", desc: "Foramen vertebrarum felvétel" },
+            "561": { output: "150", desc: "Dittmar felvétel" },
+            "600": { output: "151", desc: "Clavicula felvétel" },
+            "601": { output: "152", desc: "Sterno-clavicularis ízületi felvétel" },
+            "602": { output: "153", desc: "Acromio-clavicularis ízületi felvétel" },
+            "603": { output: "154", desc: "Scapula felvétel" },
+            "604": { output: "155", desc: "Váll, AP felvétel" },
+            "605": { output: "156", desc: "Vállak összehasonlító AP felvételei" },
+            "606": { output: "157", desc: "Váll, axiális felvétel" },
+            "607": { output: "158", desc: "Váll, transthoracalis felvétel" },
+            "608": { output: "159", desc: "Váll, terheléses felvétel" },
+            "650": { output: "160", desc: "Medence, AP felvétel" },
+            "651": { output: "161", desc: "Csípőízület, AP felvétel" },
+            "652": { output: "162", desc: "Csípőízület, oldalirányú felvétel" },
+            "653": { output: "163", desc: "Csípőízület, Lauenstein felvétel" },
+            "654": { output: "164", desc: "Obturator felvétel" },
+            "655": { output: "165", desc: "Ala felvétel" },
+            "656": { output: "166", desc: "Medence bemenet felvétel" },
+            "657": { output: "167", desc: "Medence kimenet felvétel" },
+            "660": { output: "168", desc: "Gerinc, teljes AP felvétel" },
+            "661": { output: "169", desc: "Oldalirányú teljes gerincfelvétel" },
+            "662": { output: "170", desc: "Risser-csík felvétel" },
+            "710": { output: "171", desc: "Humerus, kétirányú felvétel" },
+            "720": { output: "172", desc: "Könyök, kétirányú felvétel" },
+            "725": { output: "173", desc: "Összehasonlító könyök felvétel" },
+            "730": { output: "174", desc: "Olecranon ulnae, axialis felvétel" },
+            "731": { output: "175", desc: "Alkar, kétirányú felvétel" },
+            "740": { output: "176", desc: "Csukló, kétirányú felvétel" },
+            "741": { output: "177", desc: "Csukló, tartott felvétel" },
+            "742": { output: "178", desc: "Csukló-kéz felvétel" },
+            "750": { output: "179", desc: "Os naviculare, négyirányú felvétel" },
+            "751": { output: "180", desc: "Os naviculare felvétel" },
+            "755": { output: "181", desc: "Összehasonlító kéz felvétel AP irányban" },
+            "760": { output: "182", desc: "Kéz, kétirányú felvétel" },
+            "761": { output: "183", desc: "Kéz I. ujj, kétirányú felvétel" },
+            "762": { output: "184", desc: "Kézujjak kétirányú felvétele" },
+            "763": { output: "185", desc: "Ujj, tartott felvétel" },
+            "800": { output: "186", desc: "Teljes alsóvégtagi röntgenfelvétel" },
+            "810": { output: "187", desc: "Femur, kétirányú felvétel" },
+            "819": { output: "188", desc: "Összehasonlító térdfelvétel" },
+            "820": { output: "189", desc: "Térd, kétirányú felvétel" },
+            "821": { output: "190", desc: "Térd, tartott felvétel" },
+            "822": { output: "191", desc: "Patella, axiális felvétel" },
+            "823": { output: "192", desc: "Alagút betekintő felvétel" },
+            "830": { output: "193", desc: "Lábszár, kétirányú felvétel" },
+            "840": { output: "194", desc: "Boka, kétirányú felvétel" },
+            "841": { output: "195", desc: "Boka, tartott felvétel" },
+            "842": { output: "196", desc: "Boka, háromirányú felvétel" },
+            "850": { output: "197", desc: "Sarokcsont, oldalirányú felvétel" },
+            "851": { output: "198", desc: "Sarokcsont, axialis felvétel" },
+            "852": { output: "199", desc: "Talocalcanealis betekintő felvétel" },
+            "860": { output: "200", desc: "Láb, kétirányú felvétel" },
+            "861": { output: "201", desc: "Láb I. ujj, kétirányú felvétel" },
+            "862": { output: "202", desc: "Láb egyéb ujjairól kétirányú felvétel" },
+            "863": { output: "203", desc: "Láb összehasonlító felvétel" }
         };
 
-        // Szám szavak magyarul és angolul
+        // Magyar szám szavak
         const numberWords = {
-            hu: {
-                "nulla": "0", "egy": "1", "kettő": "2", "három": "3", "négy": "4",
-                "öt": "5", "hat": "6", "hét": "7", "nyolc": "8", "kilenc": "9"
-            },
-            en: {
-                "zero": "0", "one": "1", "two": "2", "three": "3", "four": "4",
-                "five": "5", "six": "6", "seven": "7", "eight": "8", "nine": "9",
-                "oh": "0", "to": "2", "too": "2", "for": "4"
-            }
+            "nulla": "0", "egy": "1", "kettő": "2", "három": "3", "négy": "4",
+            "öt": "5", "hat": "6", "hét": "7", "nyolc": "8", "kilenc": "9"
         };
+        
+        const digitWordsHu = ['nulla', 'egy', 'kettő', 'három', 'négy', 'öt', 'hat', 'hét', 'nyolc', 'kilenc'];
 
-        let currentLang = 'hu';
         let recognition = null;
         let isListening = false;
 
         const codeInput = document.getElementById('codeInput');
         const status = document.getElementById('status');
+        const micBtn = document.getElementById('micBtn');
 
-        // Oldal betöltésekor fókusz az inputra
+        // Fókusz
         window.onload = () => codeInput.focus();
-
-        // Nyelv beállítása
-        function setLanguage(lang) {
-            currentLang = lang;
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
-            updateStatus(lang === 'hu' ? 'Készen áll' : 'Ready');
-        }
 
         function updateStatus(text, type = '') {
             status.textContent = text;
             status.className = 'status' + (type ? ' ' + type : '');
         }
 
-        // Szövegből számok kinyerése
+        // Szövegből számok
         function parseSpokenNumbers(text) {
             text = text.toLowerCase().trim();
             let result = '';
             
             const directDigits = text.replace(/[^0-9]/g, '');
-            if (directDigits.length >= 3) {
-                return directDigits.slice(-3);
-            }
+            if (directDigits.length >= 3) return directDigits.slice(-3);
             
             const words = text.split(/[\s,.-]+/);
             for (const word of words) {
-                if (/^\d$/.test(word)) {
-                    result += word;
-                } else if (numberWords[currentLang][word]) {
-                    result += numberWords[currentLang][word];
-                } else {
-                    const otherLang = currentLang === 'hu' ? 'en' : 'hu';
-                    if (numberWords[otherLang][word]) {
-                        result += numberWords[otherLang][word];
-                    }
-                }
+                if (/^\d$/.test(word)) result += word;
+                else if (numberWords[word]) result += numberWords[word];
             }
             
-            return result.slice(-3).padStart(3, '0');
+            return result.length >= 3 ? result.slice(-3) : result.padStart(3, '0');
         }
 
-        // Számok felolvasása (magyarul ha van hang, különben angolul)
-        function speakNumbers(code) {
-            const digits = code.split('');
-            
-            // Ellenőrizzük van-e magyar hang
-            const voices = speechSynthesis.getVoices();
-            const hungarianVoice = voices.find(v => v.lang.startsWith('hu'));
-            
-            let text, lang;
-            if (hungarianVoice) {
-                const digitWordsHu = ['nulla', 'egy', 'kettő', 'három', 'négy', 'öt', 'hat', 'hét', 'nyolc', 'kilenc'];
-                text = digits.map(d => digitWordsHu[parseInt(d)]).join(', ');
-                lang = 'hu-HU';
-            } else {
-                const digitWordsEn = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-                text = digits.map(d => digitWordsEn[parseInt(d)]).join(', ');
-                lang = 'en-US';
-            }
-            
+        // Felolvasás magyarul, utána újra figyel
+        function speakResult(code) {
+            const text = code.split('').map(d => digitWordsHu[parseInt(d)]).join(', ');
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = lang;
-            if (hungarianVoice) {
-                utterance.voice = hungarianVoice;
-            }
+            utterance.lang = 'hu-HU';
             utterance.rate = 0.85;
             
             utterance.onend = () => {
-                setTimeout(() => {
-                    codeInput.value = '';
-                    isListening = false;
-                    startListening();
-                }, 500);
+                codeInput.value = '';
+                // Újraindítás
+                setTimeout(() => toggleListening(), 500);
             };
             
             speechSynthesis.speak(utterance);
         }
-        
-        // Hangok betöltése (egyes böngészőkben aszinkron)
-        speechSynthesis.onvoiceschanged = () => {
-            speechSynthesis.getVoices();
-        };
 
-        // Keresés és eredmény
+        // Keresés
         function lookupCode(inputCode) {
             const data = codeDatabase[inputCode];
-            
-            document.getElementById('inputCode').textContent = `31${inputCode}`;
+            document.getElementById('inputCode').textContent = '31' + inputCode;
             
             if (data) {
                 document.getElementById('outputCode').textContent = '99' + data.output;
                 document.getElementById('description').textContent = data.desc;
-                updateStatus(currentLang === 'hu' ? 'Találat!' : 'Found!', 'success');
-                speakNumbers(data.output);
+                updateStatus('Találat!', 'success');
+                speakResult(data.output);
             } else {
                 document.getElementById('outputCode').textContent = '—';
                 document.getElementById('description').textContent = '';
-                updateStatus(currentLang === 'hu' ? 'Nem található' : 'Not found', 'error');
-                
-                setTimeout(() => {
-                    codeInput.value = '';
-                    isListening = false;
-                    startListening();
-                }, 1500);
+                updateStatus('Nem található', 'error');
+                // Újraindítás nem találat esetén is
+                setTimeout(() => toggleListening(), 1000);
             }
         }
 
         // Billentyűzetes keresés
         function searchCode() {
             const code = codeInput.value.trim().padStart(3, '0');
-            if (code.length >= 1) {
-                lookupCode(code);
-            }
+            if (code.length >= 1) lookupCode(code);
         }
 
-        // Enter billentyű kezelése
         codeInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -566,96 +391,64 @@
             }
         });
 
-        // Csak számok engedélyezése
         codeInput.addEventListener('input', (e) => {
             e.target.value = e.target.value.replace(/[^0-9]/g, '');
         });
 
-        // Hangfelismerés
-        function startListening() {
-            // Ha már fut, állítsuk le
+        // Hangfelismerés - egyszerű, nincs automatikus újraindítás
+        function toggleListening() {
             if (isListening) {
-                isListening = false;
+                // Leállítás
                 if (recognition) recognition.stop();
-                document.getElementById('micBtn').classList.remove('listening');
-                updateStatus(currentLang === 'hu' ? 'Megállítva' : 'Stopped');
+                isListening = false;
+                micBtn.classList.remove('listening');
+                updateStatus('Megállítva');
                 return;
             }
 
+            // Indítás
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                alert(currentLang === 'hu' 
-                    ? 'A böngésző nem támogatja a hangfelismerést.' 
-                    : 'Browser does not support speech recognition.');
+                alert('A böngésző nem támogatja a hangfelismerést.');
                 return;
             }
 
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
-            recognition.lang = currentLang === 'hu' ? 'hu-HU' : 'en-US';
+            recognition.lang = 'hu-HU';
             recognition.continuous = false;
             recognition.interimResults = false;
-
-            const micBtn = document.getElementById('micBtn');
 
             recognition.onstart = () => {
                 isListening = true;
                 micBtn.classList.add('listening');
-                updateStatus(currentLang === 'hu' ? 'Figyelek...' : 'Listening...', 'listening');
-                
-                // Timeout - ha 15mp-ig nincs eredmény, újraindítjuk
-                clearTimeout(window.recognitionTimeout);
-                window.recognitionTimeout = setTimeout(() => {
-                    if (isListening) {
-                        console.log('Timeout - restarting');
-                        recognition.stop();
-                    }
-                }, 15000);
+                updateStatus('Figyelek...', 'listening');
             };
 
             recognition.onresult = (event) => {
-                clearTimeout(window.recognitionTimeout);
                 const transcript = event.results[0][0].transcript;
+                console.log('Hallottam:', transcript);
                 const code = parseSpokenNumbers(transcript);
                 
                 if (code && code.length === 3) {
                     codeInput.value = code;
                     lookupCode(code);
                 } else {
-                    updateStatus(currentLang === 'hu' 
-                        ? 'Nem értettem. Próbáld újra!' 
-                        : 'Did not understand. Try again!', 'error');
-                    // Ha nem értette, újraindít
-                    setTimeout(() => {
-                        isListening = false;
-                        startListening();
-                    }, 1000);
+                    updateStatus('Nem értettem: ' + transcript, 'error');
                 }
             };
 
             recognition.onerror = (event) => {
-                console.log('Speech error:', event.error);
+                console.log('Hiba:', event.error);
                 updateStatus('Hiba: ' + event.error, 'error');
-                // Automatikus újraindítás hiba után
-                setTimeout(() => {
-                    isListening = false;
-                    startListening();
-                }, 2000);
+                isListening = false;
+                micBtn.classList.remove('listening');
             };
 
             recognition.onend = () => {
+                isListening = false;
                 micBtn.classList.remove('listening');
-                // Ha váratlanul leállt (isListening még true), indítsuk újra
-                if (isListening) {
-                    setTimeout(() => {
-                        try {
-                            recognition.start();
-                            micBtn.classList.add('listening');
-                            updateStatus(currentLang === 'hu' ? 'Figyelek...' : 'Listening...', 'listening');
-                        } catch(e) {
-                            isListening = false;
-                            updateStatus('Leállt. Kattints a mikrofonra.', 'error');
-                        }
-                    }, 500);
+                if (status.textContent === 'Figyelek...') {
+                    updateStatus('Készen áll');
                 }
             };
 
